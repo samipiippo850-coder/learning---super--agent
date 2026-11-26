@@ -1,13 +1,22 @@
 # ExamOS · 个人定制化考研应试 Super-Agent
 
+**简体中文** | [English](#english)
+
+A personalized exam-prep super-agent: real past-paper frequency → knowledge-graph mastery → marginal-return ROI →
+“explain → transform → verify → periodic test → diagnose → minimal rollback” closed loop, with a web dashboard and a desktop app.
+
+---
+
+<a id="chinese"></a>
+
+# 简体中文
+
 以**历年真题**为数据基础，用**知识图谱 + Beta-Binomial 掌握度 + 边际收益 ROI** 决定学习顺序，
 用「知识讲解 → 变式改造 → 独立验证 → 周期性测试 → 错误诊断 → 最小回滚 → 重算 ROI」形成可执行闭环的
 后端 + Web 看板 + 桌面端项目。
 
 > 这是一个**可运行的工程 MVP**：后端 34 项 pytest、42 项 API 冒烟、10 个前端页面、独立桌面 exe 均已验证。
 > 演示数据为程序化生成（数学答案用 SymPy 现算复核），**不是真实历年真题**，不用于对外宣称考频。
-
----
 
 ## 界面预览
 
@@ -18,8 +27,6 @@
 | 知识图谱 | 自主编排（找书 / 工作流 / 权限） |
 |---|---|
 | ![知识图谱](docs/screenshot-knowledge.png) | ![自主编排](docs/screenshot-studio.png) |
-
----
 
 ## 项目特点
 
@@ -65,13 +72,12 @@ Router（LangGraph 持久化图）→ Ticket → Assignment → Worker → Repor
 ### 9. 桌面端与一键启动
 - `启动 ExamOS.cmd`：后台启动后端 + 打开浏览器，2 秒后窗口自动关闭，服务常驻
 - `停止 ExamOS.cmd`：停止服务
-- `dist\ExamOS\ExamOS.exe`：PyInstaller 打包（约 117 MB，内嵌 FastAPI + 静态看板），双击即用；该产物需本地运行 `scripts\build-desktop.ps1` 生成，不随仓库分发
+- `dist\ExamOS\ExamOS.exe`：PyInstaller 打包（约 117 MB，内嵌 FastAPI + 静态看板），双击即用；
+  该产物需本地运行 `scripts\build-desktop.ps1` 生成，不随仓库分发
 - 可选 Electron 壳 / Edge `--app` 无边框应用窗口
 
 ### 10. 离线可跑
 无 LLM 也能完整运行（规则 + 模板 + SymPy）；预留 OpenAI 兼容接口；本地默认 SQLite，生产可切 PostgreSQL（含 pgvector compose）。
-
----
 
 ## 技术栈
 
@@ -84,8 +90,6 @@ Router（LangGraph 持久化图）→ Ticket → Assignment → Worker → Repor
 | 数据 | SQLite（默认）/ PostgreSQL + pgvector（生产） |
 | 桌面 | PyInstaller exe + Edge `--app`；可选 Electron |
 | 部署 | Docker Compose（Postgres + API + Web） |
-
----
 
 ## 快速开始（Windows）
 
@@ -126,8 +130,6 @@ powershell -File .\scripts\test.ps1              # pytest + tsc --noEmit
 python backend\scripts\smoke_api.py              # 需要后端已启动
 ```
 
----
-
 ## 目录结构
 
 ```
@@ -149,8 +151,6 @@ docs/                     API 契约、设计系统、截图
 scripts/                  安装/启动/停止/测试/打包/图标脚本
 ```
 
----
-
 ## 核心算法（简）
 
 ```
@@ -164,8 +164,6 @@ ROI:       ROI_i = C_i · ΔV_i / H_i
 
 前置依赖未满足的知识点不进入排序；每条 ROI 都返回公式明细，可在 `/roi` 页展开逐行核对。
 
----
-
 ## 自主编排（`/studio`）
 
 自然语言入口同样走 Router → Worker → Ticket/Report，示例：
@@ -177,7 +175,12 @@ ROI:       ROI_i = C_i · ΔV_i / H_i
 
 默认权限：允许检索书籍 / 编排工作流 / 新增科目；**移除科目关闭**；删除操作必须二次确认。
 
----
+## 常见问题
+
+- **页面显示「API 离线」**：后端没在运行。双击 `启动 ExamOS.cmd` 重启；页面每 5 秒自动重连，也可点右上角重试。
+- **显示 404 Not Found**：直接访问 <http://127.0.0.1:8000/> 并 Ctrl+F5。未知页面路径会回退到看板，`/api/*` 仍返回 JSON 404。
+- **端口被占用**：`powershell -File .\scripts\start.ps1 -Background -Port 8001`，然后访问 <http://127.0.0.1:8001/>。
+- **桌面图标没更新**：`powershell -File .\scripts\set-desktop-icon.ps1`，然后在桌面按 F5（或注销重登刷新图标缓存）。
 
 ## 数据与版权说明
 
@@ -185,8 +188,6 @@ ROI:       ROI_i = C_i · ΔV_i / H_i
 - 书籍目录只保存书名、作者、出版社等公开书目信息，不包含书籍正文。
 - `assets/icon-source.jpg` 为使用者提供的图片，仅用于本地演示图标，请勿商用或再分发。
 - 本项目不隶属于任何考试机构；使用真实真题/教材时请遵守来源方的版权与访问条款。
-
----
 
 ## 当前限制与路线图
 
@@ -198,8 +199,6 @@ ROI:       ROI_i = C_i · ΔV_i / H_i
 | 多用户 | 单用户 default | 增加鉴权与多租户 |
 | 桌面窗口 | exe + 应用窗口；受限桌面会话降级为控制窗口 | Tauri/Qt WebEngine 单窗口内嵌 |
 
----
-
 ## 验证记录
 
 - `pytest`：34 项通过
@@ -208,3 +207,217 @@ ROI:       ROI_i = C_i · ΔV_i / H_i
 - 前端：`next build` 静态导出、`tsc --noEmit` 无错误
 - 桌面：`scripts/build-desktop.ps1` 产出 `dist/ExamOS/ExamOS.exe`，实测启动、建库、后端 `/health` 200、看板可访问
 - 仓库不包含 `.venv / node_modules / dist / web/out / SQLite 演示库`，首次启动自动安装与生成
+
+---
+
+<a id="english"></a>
+
+# English
+
+[简体中文](#chinese) | **English**
+
+ExamOS is a personalized exam-preparation super-agent. It ranks what to study next from **real past-paper frequency,
+knowledge-graph mastery and marginal-return ROI**, then closes the loop with
+“explain → transform → verify → periodic test → diagnose → minimal rollback → recompute ROI”.
+It ships a FastAPI backend, a static Next.js dashboard, and a Windows desktop launcher.
+
+> This is a **runnable engineering MVP**: 34 backend pytest cases, 42 end-to-end API smoke checks, 10 frontend pages
+> and a standalone desktop exe are all verified. Demo questions are generated programmatically (math answers are
+> re-solved with SymPy during seeding) and are **not real past papers**; do not present the frequencies as real statistics.
+
+## Screenshots
+
+| Dashboard | ROI ranking |
+|---|---|
+| ![Dashboard](docs/screenshot-dashboard.png) | ![ROI](docs/screenshot-roi.png) |
+
+| Knowledge graph | Studio (books / workflows / permissions) |
+|---|---|
+| ![Knowledge graph](docs/screenshot-knowledge.png) | ![Studio](docs/screenshot-studio.png) |
+
+## Highlights
+
+### 1. Past-paper-first frequency analysis
+Only `paper_type=real` questions count: weighted frequency `F_i`, score share `M_i`, distinct years, confidence and
+stability notes. AI-generated questions never enter the frequency statistics.
+
+### 2. Explainable ROI ordering
+Expected score is modelled per question, `V(K) = Σ π_q·m_q·p̂_q(K)`. Marginal value is computed by **finite differences**,
+`ΔV_i = V(K∪{i}) − V(K)`, then `ROI_i = C_i·ΔV_i/H_i`. Knowledge nodes with unmet prerequisites are explicitly `blocked`,
+and every ROI row carries a step-by-step `reasons.formula` you can recompute by hand.
+
+### 3. Mastery is not "questions answered"
+Beta-Binomial posterior `p_i = (α0+s_i)/(α0+β0+n_i)` counts **independent attempts only**; hinted answers and repeated
+attempts on the same question are tracked separately. Nodes move through
+`UNSEEN → LEARNING → RECOGNITION → ACTIVE_RECALL → APPLICATION → STABLE`, and STABLE also requires a delayed test.
+
+### 4. Knowledge graph and minimal rollback
+The prerequisite DAG is validated, closures are computed, and error types map to repair strategies. The planner returns the
+**minimal necessary repair set** along dependencies with estimated minutes. A single miss only flags a node "At Risk";
+repeated errors or failed delayed tests trigger a real rollback.
+
+### 5. AI question transformation with independent verification
+L1 single-point / L2 two-point / L3 multi-point / L4 cross-type transformations. Every generated question must pass six
+checks: `answer_present`, `independent_solve` (re-solved with SymPy), answer consistency, option uniqueness, syllabus scope
+and duplicate distance. Parents, knowledge combinations and verification details are recorded. English/professional-subject
+generation explicitly returns "LLM required" instead of shipping unverified questions.
+
+### 6. Test blueprints and diagnosis
+Five blueprints (daily micro / mixed quiz / stage test / comprehensive mock / initial diagnostic) sample by
+“high ROI, recent mistakes, recently studied, due for review, combinations, unseen”. Each question records its
+`bucket/reason`; submission returns per-question results, error types, mastery deltas, rollback plan and next actions.
+
+### 7. Super-Agent runtime
+Router (persistent LangGraph) → Ticket → Assignment → Worker → Report:
+- 14+ worker capabilities (exam analysis, ROI, tagging, generation, verification, diagnosis, memory, testing, subject specialists, book curation, workflow composition, subject management)
+- Ticket idempotency keys, retries, heartbeats and a human-review queue
+- Two-level event filtering (event_key dedupe + semantic routing)
+- Watchdog scanning for stalled tasks, duplicates, failed generated questions, plan backlog, repeated forgetting and ROI drift
+
+### 8. Studio (extend the study scope in natural language)
+- **Find books**: natural-language search over 35 curated public textbooks (CS 408, math, English, economics/finance, psychology, law, journalism, management, education, history) with match reasons; add or remove manually
+- **Compose workflows**: phrases like “foundation → intensive → past papers → sprint” become staged pipelines (minutes + task type), which can be paused, activated or deleted
+- **Add/remove subjects**: create custom subjects; deleting one also cleans its questions, knowledge graph and workflows (with confirmation)
+- **Agent permissions**: search books / edit workflows / add subjects / remove subjects / require delete confirmation — all toggleable
+
+### 9. Desktop app and one-click start
+- `启动 ExamOS.cmd`: starts the backend in the background and opens the browser; the console closes after 2s while the service keeps running
+- `停止 ExamOS.cmd`: stops the service
+- `dist\ExamOS\ExamOS.exe`: PyInstaller bundle (~117 MB, FastAPI + static dashboard embedded); build it locally with
+  `scripts\build-desktop.ps1` — it is not committed to the repository
+- Optional Electron shell or an Edge `--app` chromeless window
+
+### 10. Works offline
+Runs fully offline (rules + templates + SymPy); an OpenAI-compatible hook is reserved. SQLite by default, with PostgreSQL +
+pgvector available through Docker Compose.
+
+## Tech stack
+
+| Layer | Stack |
+|---|---|
+| Frontend | Next.js 16 (static export) + TypeScript, no UI framework |
+| Backend | Python 3.12, FastAPI, SQLAlchemy 2 |
+| Agent | LangGraph (SQLite checkpointer) |
+| Math verification | SymPy |
+| Data | SQLite (default) / PostgreSQL + pgvector (production) |
+| Desktop | PyInstaller exe + Edge `--app`; optional Electron |
+| Deployment | Docker Compose (Postgres + API + Web) |
+
+## Quick start (Windows)
+
+### Option A: double-click (recommended)
+
+1. Double-click `启动 ExamOS.cmd` (create a desktop shortcut if you like)
+2. First run installs dependencies, builds the frontend and seeds demo data (2–3 minutes); later runs take ~5 seconds
+3. Open <http://127.0.0.1:8000/>
+4. Stop with `停止 ExamOS.cmd`
+
+### Option B: command line
+
+```powershell
+# first time: install dependencies (uses uv when available, pip otherwise)
+powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1
+
+# start in the background (recommended); drop -Background to run in the foreground
+powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1 -Background
+
+# stop
+powershell -ExecutionPolicy Bypass -File .\scripts\stop.ps1
+
+# demo data (idempotent, -Force to rebuild)
+powershell -ExecutionPolicy Bypass -File .\scripts\seed.ps1
+```
+
+### Option C: Docker
+
+```bash
+docker compose up --build
+# API: http://127.0.0.1:8000/docs   Web: http://127.0.0.1:8080
+```
+
+### Tests
+
+```powershell
+powershell -File .\scripts\test.ps1              # pytest + tsc --noEmit
+python backend\scripts\smoke_api.py              # backend must be running
+```
+
+## Repository layout
+
+```
+backend/
+  app/
+    main.py               FastAPI entrypoint (API + SPA fallback + static dashboard)
+    models.py             26 portable tables (SQLite/PostgreSQL)
+    services/             frequency, mastery, ROI, planner, graph, tests, grading, diagnosis, transform, verify, memory, ingest, curator
+    agents/               Router (LangGraph), ticket runtime, workers, watchdog
+    routers/              system / content / learning / agent / studio
+    seed/                 demo generator (math answers verified by SymPy), book catalog and workflow templates
+  tests/                  34 pytest cases
+  scripts/                smoke_api.py / verify_ui.py
+web/                      Next.js static dashboard (10 pages)
+desktop/runner.py         desktop launcher (background / app window / control window fallback)
+desktop/electron/         optional Electron shell
+assets/                   icon source and ICO
+docs/                     API contract, design system, screenshots
+scripts/                  setup / start / stop / test / build / icon scripts
+```
+
+## Core formulas
+
+```
+frequency:        F_i = Σ_y w_y·I(i,y) / Σ_y w_y        w_y = 0.9^(y_max−y)
+score share:      M_i = Σ_q w_y·score_q·w_qi / Σ_y w_y·total_y
+expected score:   V(K) = Σ_q π_q·m_q·p̂_q(K)            p̂_q(K) = Σ_i w_qi·mastery_i
+marginal value:   ΔV_i = V(K∪{i}) − V(K)
+ROI:              ROI_i = C_i · ΔV_i / H_i
+mastery:          p_i = (α0+s_i)/(α0+β0+n_i)            α0=1, β0=3
+```
+
+Nodes with unmet prerequisites are excluded from the ranking; every ROI row exposes its formula so the `/roi` page can be
+audited line by line.
+
+## Studio (`/studio`)
+
+Natural-language requests also flow through Router → Worker → Ticket/Report, e.g.:
+
+- "Find me data structures and operating systems textbooks for a CS master's exam"
+- "Compose a foundation → intensive → past papers → sprint workflow for Math I"
+- "Add a subject: Data Structures and Algorithms"
+- "Remove English I" (blocked by the default permission; do it manually or enable the permission)
+
+Default permissions: search books / compose workflows / add subjects are on; **removing subjects is off**; deletions require
+explicit confirmation.
+
+## FAQ
+
+- **"API offline" on the page**: the backend is not running. Start it with `启动 ExamOS.cmd`; the page retries every 5 seconds, or click the banner to retry.
+- **404 Not Found**: open <http://127.0.0.1:8000/> and press Ctrl+F5. Unknown page paths fall back to the dashboard while `/api/*` keeps JSON 404s.
+- **Port already in use**: `powershell -File .\scripts\start.ps1 -Background -Port 8001`, then open <http://127.0.0.1:8001/>.
+- **Desktop icon not refreshed**: run `powershell -File .\scripts\set-desktop-icon.ps1` and press F5 on the desktop (or sign out/in to rebuild the icon cache).
+
+## Data and copyright
+
+- Demo questions are generated; math answers are re-solved with SymPy during seeding; English material is sample text.
+- The book catalog stores only public bibliography data (title, author, publisher); no book content is included.
+- `assets/icon-source.jpg` is a user-provided image used for the local demo icon only; do not use it commercially or redistribute it.
+- This project is not affiliated with any exam authority. Respect the copyright and terms of any real past papers or textbooks you use.
+
+## Limitations and roadmap
+
+| Area | Current | Next |
+|---|---|---|
+| PDF / OCR import | text and structured JSON only | PyMuPDF + OCR / multimodal models |
+| LLM features | offline rules + templates; OpenAI-compatible hook reserved | tagging, English/professional generation and essay grading through the same verification pipeline |
+| Database | SQLite by default; Compose provides PostgreSQL + pgvector | production switch + vector retrieval |
+| Multi-user | single default user | authentication and multi-tenancy |
+| Desktop shell | exe + app window; control-window fallback in restricted sessions | Tauri/Qt WebEngine single-window shell |
+
+## Verification
+
+- `pytest`: 34 passed
+- `scripts/smoke_api.py`: 42/42 passed
+- `scripts/verify_ui.py`: 10 pages and static assets, 0 failures
+- Frontend: `next build` static export, `tsc --noEmit` clean
+- Desktop: `scripts/build-desktop.ps1` produces `dist/ExamOS/ExamOS.exe`; verified start-up, database creation, `/health` 200 and a reachable dashboard
+- The repository excludes `.venv / node_modules / dist / web/out / SQLite demo DB`; they are created on first run
