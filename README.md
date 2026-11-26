@@ -65,7 +65,7 @@ Router（LangGraph 持久化图）→ Ticket → Assignment → Worker → Repor
 ### 9. 桌面端与一键启动
 - `启动 ExamOS.cmd`：后台启动后端 + 打开浏览器，2 秒后窗口自动关闭，服务常驻
 - `停止 ExamOS.cmd`：停止服务
-- `dist\ExamOS\ExamOS.exe`：PyInstaller 打包（约 117 MB，内嵌 FastAPI + 静态看板），双击即用
+- `dist\ExamOS\ExamOS.exe`：PyInstaller 打包（约 117 MB，内嵌 FastAPI + 静态看板），双击即用；该产物需本地运行 `scripts\build-desktop.ps1` 生成，不随仓库分发
 - 可选 Electron 壳 / Edge `--app` 无边框应用窗口
 
 ### 10. 离线可跑
@@ -206,4 +206,5 @@ ROI:       ROI_i = C_i · ΔV_i / H_i
 - `scripts/smoke_api.py`：42/42 项通过
 - `scripts/verify_ui.py`：10 个页面与静态资源 0 失败
 - 前端：`next build` 静态导出、`tsc --noEmit` 无错误
-- 桌面：`dist/ExamOS/ExamOS.exe` 启动、建库、后端 `/health` 200、看板可访问
+- 桌面：`scripts/build-desktop.ps1` 产出 `dist/ExamOS/ExamOS.exe`，实测启动、建库、后端 `/health` 200、看板可访问
+- 仓库不包含 `.venv / node_modules / dist / web/out / SQLite 演示库`，首次启动自动安装与生成
