@@ -1,0 +1,14 @@
+{
+  "name": "examos-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ExamOS desktop shell (Electron + local FastAPI backend)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "^45.3.4"
+  }
+}

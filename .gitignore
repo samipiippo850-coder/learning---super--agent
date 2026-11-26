@@ -1,0 +1,31 @@
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/var/
+backend/.env
+
+# node / next
+web/node_modules/
+web/.next/
+web/out/
+web/next-env.d.ts
+
+# local state & caches
+.uv-cache/
+.npm-cache/
+.tmp/
+.pgdata/
+.pgruntime/
+.env
+
+# desktop
+desktop/electron/node_modules/
+desktop/electron/package-lock.json
+dist/
+.build/
+
+# build artifacts
+web/tsconfig.tsbuildinfo
+*.tsbuildinfo
